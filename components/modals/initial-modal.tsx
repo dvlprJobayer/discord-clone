@@ -3,6 +3,10 @@
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import FileUpload from "@/components/file-upload";
+import axios from "axios"
+import { useRouter } from "next/navigation";
 
 import {
   Dialog,
@@ -22,11 +26,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
 
 const InitialModal = () => {
 
   const [isMounted, setIsMounted] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     setIsMounted(true)
@@ -52,7 +56,15 @@ const InitialModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values)
+    try {
+      await axios.post("api/servers", values)
+
+      form.reset()
+      router.refresh()
+      window.location.reload()
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   if(!isMounted) {
@@ -74,7 +86,21 @@ const InitialModal = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="space-y-8 px-6">
               <div className="flex items-center justify-center text-center">
-                TODO: Image Upload
+                <FormField 
+                  control={form.control}
+                  name="imgUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <FileUpload
+                          endpoint="serverImg"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
               </div>
 
               <FormField 
