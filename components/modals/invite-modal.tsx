@@ -14,13 +14,14 @@ import { Label } from "@/components/ui/label";
 import useOrigin from "@/hooks/use-origin";
 import { useState } from "react";
 import { Check, Copy, RefreshCw } from "lucide-react";
+import axios from "axios";
 
 const InviteModal = () => {
 
   const [copied, setCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { isOpen, type, onClose, data } = useModal();
+  const { isOpen, onOpen, type, onClose, data } = useModal();
   const origin = useOrigin();
 
   const { server } = data;
@@ -35,6 +36,19 @@ const InviteModal = () => {
     setTimeout(() => {
       setCopied(false);
     }, 1000);
+  }
+
+  const onNewCode = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.patch(`/api/servers/${server?.id}/invite-code`);
+
+      onOpen("invite", { server: response.data }); 
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -54,10 +68,11 @@ const InviteModal = () => {
           </Label>
           <div className="flex items-center mt-2 gap-x-2">
             <Input
+              disabled={isLoading}
               className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
               value={inviteUrl}
             />
-            <Button onClick={onCopy} size="icon">
+            <Button disabled={isLoading} onClick={onCopy} size="icon">
               {copied 
                 ? <Check className="w-4 h-4" /> 
                 : <Copy className="w-4 h-4" />
@@ -65,6 +80,8 @@ const InviteModal = () => {
             </Button>
           </div>
           <Button
+            disabled={isLoading}
+            onClick={onNewCode}
             variant="link"
             size="sm"
             className="text-xs text-zinc-500 mt-4"
