@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useModal } from "@/hooks/use-modal-store";
 import { MemberRole } from "@prisma/client";
