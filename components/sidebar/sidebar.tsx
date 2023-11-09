@@ -28,7 +28,7 @@ const Sidebar = async () => {
   });
 
   return (
-    <div className="space-y-4 flex flex-col items-center h-full w-full text-primary py-3 dark:bg-[#1E1F22]">
+    <div className="space-y-4 flex flex-col items-center h-full w-full text-primary py-3 dark:bg-[#1E1F22] bg-[#E3E5E8]">
 
       {/* Create Server Button */}
       <SidebarAction />
