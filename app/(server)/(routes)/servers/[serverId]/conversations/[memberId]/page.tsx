@@ -55,6 +55,7 @@ const MemberIdPage = async ({
         imgUrl={otherMember.profile.imgUrl}
         type="member"
       />
+      <div className="flex-1">Future Message</div>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import './globals.css'
 import { ThemeProvider } from '@/components/provider/theme-provider'
 import { cn } from '@/lib/utils'
 import ModalProvider from '@/components/provider/modal-provider'
+import SocketProvider from '@/components/provider/socket-provider'
 
 const font = Open_Sans({ subsets: ['latin'] })
 
@@ -30,8 +31,10 @@ export default function RootLayout({
             defaultTheme="dark"
             enableSystem={false}
           >
-            <ModalProvider />
-            {children}
+            <SocketProvider>
+              <ModalProvider />
+              {children}
+            </SocketProvider>
           </ThemeProvider>
         </body>
       </html>

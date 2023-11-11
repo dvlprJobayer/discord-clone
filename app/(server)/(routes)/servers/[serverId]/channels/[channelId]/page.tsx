@@ -46,6 +46,7 @@ const ChannelIdPage = async ({
         serverId={channel.serverId}
         type="channel"
       />
+      <div className="flex-1">Future Message</div>
     </div>
   );
 }
